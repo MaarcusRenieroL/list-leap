@@ -1,5 +1,5 @@
 import { deleteBoard } from "@/actions/delete-board";
-import { FormDelete } from "@/app/(platform)/(dashboard)/organization/[organizationId]/_components/form/form-delete";
+import { FormDelete } from "@/components/ui/form/form-delete";
 
 interface BoardProps {
   title: string;
