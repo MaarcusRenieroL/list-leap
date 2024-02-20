@@ -36,7 +36,7 @@ export const BoardList = async () => {
             key={board.id}
             href={`/board/${board.id}`}
             style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
-            className="group relative aspect-ratio bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
+            className="group relative aspect-ratio bg-no-repeat bg-center bg-cover rounded-sm h-full w-full p-2 overflow-hidden"
           >
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
             <p className="relative font-semibold text-white">{board.title}</p>

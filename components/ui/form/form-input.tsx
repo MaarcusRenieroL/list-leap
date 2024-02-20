@@ -49,21 +49,21 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
               >
                 {label}
               </Label>
-              <Input
-                onBlur={onBlur}
-                defaultValue={defaultValue}
-                ref={ref}
-                required={required}
-                name={id}
-                id={id}
-                placeholder={placeholder}
-                type={type}
-                disabled={pending || disabled}
-                className={cn("text-sm, px-2, py-1", className)}
-                aria-describedby={`${id}-error`}
-              />
             </div>
           ) : null}
+          <Input
+            onBlur={onBlur}
+            defaultValue={defaultValue}
+            ref={ref}
+            required={required}
+            name={id}
+            id={id}
+            placeholder={placeholder}
+            type={type}
+            disabled={pending || disabled}
+            className={cn("text-sm, px-2, py-1", className)}
+            aria-describedby={`${id}-error`}
+          />
         </div>
         <FormErrors id={id} errors={errors} />
       </div>
