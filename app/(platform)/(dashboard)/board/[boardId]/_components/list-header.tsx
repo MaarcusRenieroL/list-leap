@@ -6,8 +6,10 @@ import { useEventListener } from "usehooks-ts";
 import { useState, useRef, ElementRef } from "react";
 
 import { useAction } from "@/hooks/use-action";
-import { FormInput } from "@/components/ui/form/form-input";
 import { updateList } from "@/actions/update-list";
+import { FormInput } from "@/components/ui/form/form-input";
+
+import { ListOptions } from "./list-options";
 
 interface ListHeaderProps {
   data: List;
@@ -32,16 +34,18 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
     setIsEditing(false);
   };
 
-  const { execute, fieldErrors } = useAction(updateList, {
+  const { execute } = useAction(updateList, {
     onSuccess: (data) => {
       toast.success(`Renamed to "${data.title}"`);
+      setTitle(data.title);
+      disableEditing();
     },
     onError: (error) => {
       toast.error(error);
     },
   });
 
-  const onSubmit = (formData: FormData) => {
+  const handleSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
     const id = formData.get("id") as string;
     const boardId = formData.get("boardId") as string;
@@ -50,7 +54,11 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
       return disableEditing();
     }
 
-    execute({ title, id, boardId });
+    execute({
+      title,
+      id,
+      boardId,
+    });
   };
 
   const onBlur = () => {
@@ -68,7 +76,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
   return (
     <div className="pt-2 px-2 text-sm font-semibold flex justify-between items-start- gap-x-2">
       {isEditing ? (
-        <form ref={formRef} action={onSubmit} className="flex-1 px-[2px]">
+        <form ref={formRef} action={handleSubmit} className="flex-1 px-[2px]">
           <input hidden id="id" name="id" value={data.id} />
           <input hidden id="boardId" name="boardId" value={data.boardId} />
           <FormInput
@@ -89,6 +97,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
           {title}
         </div>
       )}
+      <ListOptions onAddCard={() => {}} data={data} />
     </div>
   );
 };
