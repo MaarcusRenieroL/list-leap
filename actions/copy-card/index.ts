@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { createSafeAction } from "@/actions/create-safe-actions";
 
-import { UpdateCard } from "./schema";
+import { CopyCard } from "./schema";
 import { InputType, ReturnType } from "./types";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -18,11 +18,11 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { id, boardId, ...values } = data;
+  const { id, boardId } = data;
   let card;
 
   try {
-    card = await db.card.update({
+    const cardToCopy = await db.card.findUnique({
       where: {
         id,
         list: {
@@ -31,13 +31,31 @@ const handler = async (data: InputType): Promise<ReturnType> => {
           },
         },
       },
+    });
+
+    if (!cardToCopy) {
+      return { error: "Card not found" };
+    }
+
+    const lastCard = await db.card.findFirst({
+      where: { listId: cardToCopy.listId },
+      orderBy: { order: "desc" },
+      select: { order: true },
+    });
+
+    const newOrder = lastCard ? lastCard.order + 1 : 1;
+
+    card = await db.card.create({
       data: {
-        ...values,
+        title: `${cardToCopy.title} - Copy`,
+        description: cardToCopy.description,
+        order: newOrder,
+        listId: cardToCopy.listId,
       },
     });
   } catch (error) {
     return {
-      error: "Failed to update.",
+      error: "Failed to copy.",
     };
   }
 
@@ -45,4 +63,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   return { data: card };
 };
 
-export const updateCard = createSafeAction(UpdateCard, handler);
+export const copyCard = createSafeAction(CopyCard, handler);
