@@ -9,6 +9,8 @@ import { createSafeAction } from "@/actions/create-safe-actions";
 
 import { DeleteBoard } from "@/actions/delete-board/schema";
 import { InputType, ReturnType } from "@/actions/delete-board/types";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -28,6 +30,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         id,
         organizationId: orgId,
       },
+    });
+
+    await createAuditLog({
+      entityId: board.id,
+      entityTitle: board.title,
+      entityType: ENTITY_TYPE.BOARD,
+      action: ACTION.DELETE,
     });
   } catch (error) {
     return {
