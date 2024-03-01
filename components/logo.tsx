@@ -11,12 +11,12 @@ const headingFont = localFont({
 export const Logo = () => {
   return (
     <Link href="/">
-      <div className="hover:opacity-75 transition items-center gap-x-2 hidden md:flex">
+      <div className="hover:opacity-75 transition items-center justify-center gap-x-2 hidden md:flex">
         <Image src="/trello.svg" height={30} width={30} alt="trello-logo" />
         <p
           className={cn("text-lg text-neutral-700 pb-1", headingFont.className)}
         >
-          Trello Clone
+          List Leap
         </p>
       </div>
     </Link>

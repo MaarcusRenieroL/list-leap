@@ -50,7 +50,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   revalidatePath(`/board/${boardId}`);
-  return { data: card };
+  return { data: { ...card, boardId: boardId } };
 };
 
 export const updateCard = createSafeAction(UpdateCard, handler);

@@ -47,6 +47,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   revalidatePath(`/board/${boardId}`);
+  // @ts-ignore
   return { data: list };
 };
 

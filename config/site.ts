@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Trello Clone",
+  name: "List Leap",
   description:
     "Collaborate, manage projects, and reach new productivity peaks.",
 };
